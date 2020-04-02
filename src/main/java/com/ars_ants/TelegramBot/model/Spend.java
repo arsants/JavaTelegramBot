@@ -16,6 +16,16 @@ public class Spend {
     private String category;
     private Timestamp timestamp;
 
+    public Spend() {
+    }
+
+    public Spend(Long chatId, Float sum, String category, Timestamp timestamp) {
+        this.chatId = chatId;
+        this.sum = sum;
+        this.category = category;
+        this.timestamp = timestamp;
+    }
+
     public Long getId() {
         return id;
     }
