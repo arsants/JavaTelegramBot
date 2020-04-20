@@ -13,23 +13,6 @@ public enum BotState {
 
         @Override
         public BotState nextState() {
-            return EnterPhone;
-        }
-    },
-
-    EnterPhone {
-        @Override
-        public void enter(BotContext context) throws TelegramApiException {
-            sendMessage(context, "Enter phone");
-        }
-
-        @Override
-        public void handleInput(BotContext context) {
-            context.getUser().setPhone(context.getInput());
-        }
-
-        @Override
-        public BotState nextState() {
             return EnterPassword;
         }
     },
@@ -45,6 +28,11 @@ public enum BotState {
         @Override
         public void handleInput(BotContext context) {
             if (context.getInput().length() < 6) {
+                try {
+                    sendMessage(context, "Your password should contains at least 6 character");
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
                 next = EnterPassword;
             } else {
                 context.getUser().setPassword(context.getInput());
@@ -71,17 +59,101 @@ public enum BotState {
     },
 
     Usage {
+        private BotState next;
+
         @Override
         public void enter(BotContext context) throws TelegramApiException {
-            sendMessage(context, "Usage: "
-                    + " "
-                    + "Category - price"
-                    + "\r\n");
+            sendMessage(context, "Usage: \n"
+                    + "Select what you to do: \n"
+                    + "type Income or Spend to select action");
+        }
+
+        @Override
+        public void handleInput(BotContext context) {
+            if (context.getInput().toLowerCase().contains("income")) {
+                next = Income;
+            } else if (context.getInput().toLowerCase().contains("spend")) {
+                next = Spend;
+            } else {
+                try {
+                    sendMessage(context, "You entered wrong action, try again.\n"
+                            + "see usage down bellow");
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+                next = Usage;
+            }
         }
 
         @Override
         public BotState nextState() {
-            return Start;
+            return next;
+        }
+    },
+
+    Spend {
+        private BotState next;
+
+        @Override
+        public void enter(BotContext context) throws TelegramApiException {
+            sendMessage(context, "Enter category and price to add your spend: \n"
+                    + "Example: \n"
+                    + "Category - price\n"
+                    + "type \"exit\" to choose another action");
+        }
+
+        @Override
+        public void handleInput(BotContext context) {
+            if (context.getInput().toLowerCase().contains("exit")) {
+                next = Usage;
+            } else if (context.getInput().contains("-")){
+                //TODO
+                var Data = context.getInput().split("-");
+                System.out.println(Data[0]);
+                System.out.println(Data[1]);
+                next = Spend;
+            } else {
+                //TODO
+                next = Spend;
+            }
+        }
+
+        @Override
+        public BotState nextState() {
+            return next;
+        }
+    },
+
+    Income {
+        private BotState next;
+
+        @Override
+        public void enter(BotContext context) throws TelegramApiException {
+            sendMessage(context, "Enter category and price to add your spend: \n"
+                    + "Example: \n"
+                    + "Category - price\n"
+                    + "type \"exit\" to choose another action");
+        }
+
+        @Override
+        public void handleInput(BotContext context) {
+            if (context.getInput().toLowerCase().contains("exit")) {
+                next = Usage;
+            } else if (context.getInput().contains("-")){
+                //TODO
+                var Data = context.getInput().split("-");
+                System.out.println(Data[0]);
+                System.out.println(Data[1]);
+                next = Income;
+            } else {
+                //TODO
+                next = Income;
+            }
+        }
+
+        @Override
+        public BotState nextState() {
+            return next;
         }
     };
 
@@ -118,8 +190,7 @@ public enum BotState {
         return inputNeeded;
     }
 
-    public void handleInput(BotContext context) {
-    }
+    public void handleInput(BotContext context) { }
 
     public abstract void enter(BotContext context) throws TelegramApiException;
 

@@ -64,7 +64,6 @@ public class ChatBot extends TelegramLongPollingBot {
 
         if (user == null) {
             state = BotState.getInitialState();
-
             user = new User(chatId, state.ordinal());
             userService.addUser(user);
 
@@ -128,7 +127,6 @@ public class ChatBot extends TelegramLongPollingBot {
         }
     }
 
-
     private void listUsers(User admin) {
         StringBuilder sb = new StringBuilder("All users list:\r\n");
         List<User> users = userService.findAllUsers();
@@ -136,7 +134,7 @@ public class ChatBot extends TelegramLongPollingBot {
         users.forEach(user ->
                 sb.append(user.getId())
                         .append(' ')
-                        .append(user.getPhone())
+                        .append(user.getChatId())
                         .append("\r\n")
         );
 

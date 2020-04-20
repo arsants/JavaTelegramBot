@@ -3,6 +3,8 @@ package com.ars_ants.TelegramBot.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 
 @Entity
@@ -13,13 +15,18 @@ public class User {
 
     private Long chatId;
     private Integer stateId;
-    private String phone;
     private String password;
     private Boolean admin;
     private Boolean superUser = false;
-    private Boolean notified = false;
+    @OneToMany
+    private List<Spend> spends;
+    @OneToMany
+    private List<Income> incomes;
 
     public User(){}
+    public User(Long chatId) {
+        this.chatId = chatId;
+    }
     public User(Long chatId, Integer stateId) {
         this.chatId = chatId;
         this.stateId = stateId;
@@ -35,16 +42,8 @@ public class User {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getChatId() {
         return chatId;
-    }
-
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
     }
 
     public Integer getStateId() {
@@ -54,15 +53,6 @@ public class User {
     public void setStateId(Integer stateId) {
         this.stateId = stateId;
     }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
 
     public void setAdmin(Boolean admin) {
         this.admin = admin;
@@ -74,14 +64,6 @@ public class User {
 
     public Boolean isSuperUser() {
         return superUser;
-    }
-
-    public Boolean getNotified() {
-        return notified;
-    }
-
-    public void setNotified(Boolean notified) {
-        this.notified = notified;
     }
 
     public void setPassword(String password) {
