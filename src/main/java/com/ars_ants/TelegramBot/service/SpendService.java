@@ -18,7 +18,7 @@ public class SpendService {
         this.spendRepository = spendRepository;
     }
 
-    public Spend create(Long userId, float cost, String category) {
+    public Spend create(Long userId, String category, float cost) {
         return spendRepository.save(new Spend(userId, cost, category, new Timestamp(System.currentTimeMillis())));
     }
 

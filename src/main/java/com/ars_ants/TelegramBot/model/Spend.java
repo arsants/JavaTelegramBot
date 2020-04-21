@@ -9,7 +9,7 @@ public class Spend {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
     private Float sum;
     private String category;

@@ -24,12 +24,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void addUser(@NotNull User user) {
+    public User addUser(@NotNull User user) {
         user.setAdmin(userRepository.count() == 0);
-        userRepository.save(user);
+        System.out.println(user);
+        return userRepository.save(user);
     }
 
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public User updateUser(User user) {
+        System.out.println(user);
+        return userRepository.save(user);
     }
 }

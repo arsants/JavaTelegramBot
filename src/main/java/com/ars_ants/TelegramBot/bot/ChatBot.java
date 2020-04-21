@@ -2,6 +2,7 @@ package com.ars_ants.TelegramBot.bot;
 
 
 import com.ars_ants.TelegramBot.model.User;
+import com.ars_ants.TelegramBot.service.StateHandlerService;
 import com.ars_ants.TelegramBot.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,9 +31,11 @@ public class ChatBot extends TelegramLongPollingBot {
     private String botToken;
 
     private final UserService userService;
+    private final StateHandlerService stateHandler;
 
-    public ChatBot(UserService userService) {
+    public ChatBot(UserService userService, StateHandlerService stateHandler) {
         this.userService = userService;
+        this.stateHandler = stateHandler;
     }
 
     @Override
@@ -82,18 +85,14 @@ public class ChatBot extends TelegramLongPollingBot {
             LOGGER.info("Update received for user in state: " + state);
         }
 
-        state.handleInput(context);
-
-        do {
-            state = state.nextState();
-            try {
-                state.enter(context);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        } while (!state.isInputNeeded());
-
-        user.setStateId(state.ordinal());
+        stateHandler.handleState(state, context);
+        var nextState = state.handleInput(context);
+        try {
+            nextState.enter(context);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+        user.setStateId(nextState.ordinal());
         userService.updateUser(user);
     }
 

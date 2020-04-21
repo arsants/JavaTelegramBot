@@ -16,7 +16,7 @@ public class IncomeService {
         this.incomeRepository = incomeRepository;
     }
 
-    public Income create(Long userId, float cost, String category) {
+    public Income create(Long userId, String category, float cost) {
         return incomeRepository.save(new Income(userId, cost, category, new Timestamp(System.currentTimeMillis())));
     }
 

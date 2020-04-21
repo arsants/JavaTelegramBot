@@ -2,10 +2,7 @@ package com.ars_ants.TelegramBot.model;
 
 import org.glassfish.grizzly.http.util.TimeStamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -14,7 +11,7 @@ public class Income {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
     private Float sum;
     private String category;

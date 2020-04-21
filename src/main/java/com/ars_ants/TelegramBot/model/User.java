@@ -1,9 +1,6 @@
 package com.ars_ants.TelegramBot.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 
@@ -18,14 +15,14 @@ public class User {
     private String password;
     private Boolean admin;
     private Boolean superUser = false;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Spend> spends;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Income> incomes;
 
     public User(){}
-    public User(Long chatId) {
-        this.chatId = chatId;
+    public User(Long id) {
+        this.id = id;
     }
     public User(Long chatId, Integer stateId) {
         this.chatId = chatId;
@@ -68,5 +65,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", chatId=" + chatId +
+                ", stateId=" + stateId +
+                ", password='" + password + '\'' +
+                ", admin=" + admin +
+                ", superUser=" + superUser +
+                '}';
     }
 }
