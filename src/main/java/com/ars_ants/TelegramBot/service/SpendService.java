@@ -5,6 +5,7 @@ import com.ars_ants.TelegramBot.model.Spend;
 import com.ars_ants.TelegramBot.repo.SpendRepository;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +14,8 @@ import java.util.Optional;
 public class SpendService {
     private final SpendRepository spendRepository;
 
-    public SpendService(SpendRepository spendService) {
-        this.spendRepository = spendService;
+    public SpendService(SpendRepository spendRepository) {
+        this.spendRepository = spendRepository;
     }
 
     public Spend create(Long userId, float cost, String category) {

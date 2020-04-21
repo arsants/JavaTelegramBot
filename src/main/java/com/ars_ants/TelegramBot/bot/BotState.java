@@ -1,7 +1,12 @@
 package com.ars_ants.TelegramBot.bot;
 
+import com.ars_ants.TelegramBot.model.Spend;
+import com.ars_ants.TelegramBot.service.SpendService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import javax.inject.Inject;
+import java.util.List;
 
 public enum BotState {
 
@@ -108,9 +113,15 @@ public enum BotState {
                 next = Usage;
             } else if (context.getInput().contains("-")){
                 //TODO
-                var Data = context.getInput().split("-");
+                var Data = context.getInput().replaceAll(" ","").split("-");
                 System.out.println(Data[0]);
                 System.out.println(Data[1]);
+                spendService.create(context.getUser().getId(),Float.parseFloat(Data[1]),Data[0]);
+                List<Spend> spends = spendService.getAllByUserId(context.getUser().getId());
+                for (var elem : spends)
+                {
+                    System.out.println(elem);
+                }
                 next = Spend;
             } else {
                 //TODO
@@ -141,9 +152,10 @@ public enum BotState {
                 next = Usage;
             } else if (context.getInput().contains("-")){
                 //TODO
-                var Data = context.getInput().split("-");
+                var Data = context.getInput().replaceAll(" ","").split("-");
                 System.out.println(Data[0]);
                 System.out.println(Data[1]);
+
                 next = Income;
             } else {
                 //TODO
@@ -157,8 +169,12 @@ public enum BotState {
         }
     };
 
+
     private static BotState[] states;
     private final boolean inputNeeded;
+
+    private final SpendService spendService;
+
 
     BotState() {
         this.inputNeeded = true;
@@ -166,6 +182,7 @@ public enum BotState {
 
     BotState(boolean inputNeeded) {
         this.inputNeeded = inputNeeded;
+
     }
 
     public static BotState getInitialState() {
