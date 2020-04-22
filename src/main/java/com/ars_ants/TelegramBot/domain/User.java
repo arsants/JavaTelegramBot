@@ -1,13 +1,14 @@
-package com.ars_ants.TelegramBot.model;
+package com.ars_ants.TelegramBot.domain;
 
 import javax.persistence.*;
 import java.util.List;
 
 
 @Entity
+@Table(name="users")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     private Long chatId;
@@ -15,15 +16,14 @@ public class User {
     private String password;
     private Boolean admin;
     private Boolean superUser = false;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Spend> spends;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Income> incomes;
 
-    public User(){}
+    public User() {
+    }
+
     public User(Long id) {
         this.id = id;
     }
+
     public User(Long chatId, Integer stateId) {
         this.chatId = chatId;
         this.stateId = stateId;

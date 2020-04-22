@@ -1,8 +1,7 @@
 package com.ars_ants.TelegramBot.bot;
 
 
-import com.ars_ants.TelegramBot.model.User;
-import com.ars_ants.TelegramBot.service.StateHandlerService;
+import com.ars_ants.TelegramBot.domain.User;
 import com.ars_ants.TelegramBot.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @PropertySource("classpath:telegram.properties")
@@ -57,10 +57,8 @@ public class ChatBot extends TelegramLongPollingBot {
 
         User user = userService.findByChatId(chatId);
 
-
         if (checkIfAdminCommand(user, text))
             return;
-
 
         BotContext context;
         BotState state;
@@ -85,14 +83,19 @@ public class ChatBot extends TelegramLongPollingBot {
             LOGGER.info("Update received for user in state: " + state);
         }
 
-        stateHandler.handleState(state, context);
-        var nextState = state.handleInput(context);
-        try {
-            nextState.enter(context);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-        user.setStateId(nextState.ordinal());
+        state.handleInput(context);
+
+        do {
+            stateHandler.handleState(state, context);
+            state = state.nextState();
+            try {
+                state.enter(context);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        } while (!state.isInputNeeded());
+
+        user.setStateId(state.ordinal());
         userService.updateUser(user);
     }
 

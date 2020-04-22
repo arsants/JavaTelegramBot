@@ -1,15 +1,17 @@
-package com.ars_ants.TelegramBot.model;
+package com.ars_ants.TelegramBot.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "spends")
 public class Spend {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    @ManyToOne
     private User user;
     private Float sum;
     private String category;

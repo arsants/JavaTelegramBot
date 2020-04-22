@@ -1,6 +1,6 @@
 package com.ars_ants.TelegramBot.service;
 
-import com.ars_ants.TelegramBot.model.Income;
+import com.ars_ants.TelegramBot.domain.Income;
 import com.ars_ants.TelegramBot.repo.IncomeRepository;
 import org.springframework.stereotype.Service;
 

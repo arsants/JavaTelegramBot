@@ -1,8 +1,7 @@
 package com.ars_ants.TelegramBot.service;
 
-import com.ars_ants.TelegramBot.model.User;
+import com.ars_ants.TelegramBot.domain.User;
 import com.ars_ants.TelegramBot.repo.UserRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,14 +23,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User addUser(@NotNull User user) {
+    public User addUser(User user) {
         user.setAdmin(userRepository.count() == 0);
-        System.out.println(user);
         return userRepository.save(user);
     }
 
     public User updateUser(User user) {
-        System.out.println(user);
         return userRepository.save(user);
     }
 }

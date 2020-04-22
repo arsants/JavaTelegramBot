@@ -1,6 +1,6 @@
 package com.ars_ants.TelegramBot.bot;
 
-import com.ars_ants.TelegramBot.model.User;
+import com.ars_ants.TelegramBot.domain.User;
 
 public class BotContext {
     private final ChatBot bot;

@@ -1,11 +1,10 @@
 package com.ars_ants.TelegramBot.service;
 
 
-import com.ars_ants.TelegramBot.model.Spend;
+import com.ars_ants.TelegramBot.domain.Spend;
 import com.ars_ants.TelegramBot.repo.SpendRepository;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
