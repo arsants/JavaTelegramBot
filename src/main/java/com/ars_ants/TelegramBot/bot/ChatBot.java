@@ -1,6 +1,8 @@
 package com.ars_ants.TelegramBot.bot;
 
 
+import com.ars_ants.TelegramBot.domain.Income;
+import com.ars_ants.TelegramBot.domain.Spend;
 import com.ars_ants.TelegramBot.domain.User;
 import com.ars_ants.TelegramBot.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +15,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +26,10 @@ public class ChatBot extends TelegramLongPollingBot {
 
     private static final String BROADCAST = "broadcast ";
     private static final String LIST_USERS = "users";
+
+    List<Spend> spends;
+    List<Income> incomes;
+
 
     @Value("${bot.name}")
     private String botName;
@@ -68,7 +75,7 @@ public class ChatBot extends TelegramLongPollingBot {
             user = new User(chatId, state.ordinal());
             userService.addUser(user);
 
-            context = BotContext.of(this, user, text);
+            context = BotContext.of(this, user, text, null, null);
             try {
                 state.enter(context);
             } catch (TelegramApiException e) {
@@ -77,7 +84,7 @@ public class ChatBot extends TelegramLongPollingBot {
 
             LOGGER.info("New user has been add: " + chatId);
         } else {
-            context = BotContext.of(this, user, text);
+            context = BotContext.of(this, user, text, spends, incomes);
             state = BotState.byId(user.getStateId());
 
             LOGGER.info("Update received for user in state: " + state);
@@ -87,6 +94,8 @@ public class ChatBot extends TelegramLongPollingBot {
 
         do {
             stateHandler.handleState(state, context);
+            incomes = context.getIncomes();
+            spends = context.getSpends();
             state = state.nextState();
             try {
                 state.enter(context);

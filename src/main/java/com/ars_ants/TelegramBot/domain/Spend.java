@@ -2,6 +2,7 @@ package com.ars_ants.TelegramBot.domain;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name = "spends")
@@ -25,5 +26,14 @@ public class Spend {
         this.sum = sum;
         this.category = category;
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        String formattedDate = new SimpleDateFormat("MMM d HH:mm:ss").format(timestamp);
+        return "Spend: " +
+                "sum: " + sum +
+                ", category: " + category + '\'' +
+                ", date: " + formattedDate;
     }
 }

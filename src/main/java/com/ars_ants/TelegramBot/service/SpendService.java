@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.System.currentTimeMillis;
+
 @Service
 public class SpendService {
     private final SpendRepository spendRepository;
@@ -17,8 +19,10 @@ public class SpendService {
         this.spendRepository = spendRepository;
     }
 
+
     public Spend create(Long userId, String category, float cost) {
-        return spendRepository.save(new Spend(userId, cost, category, new Timestamp(System.currentTimeMillis())));
+        Timestamp time = new Timestamp(currentTimeMillis());
+        return spendRepository.save(new Spend(userId, cost, category, time));
     }
 
     public void delete(Long incomeId) {
