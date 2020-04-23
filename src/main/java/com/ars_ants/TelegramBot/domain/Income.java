@@ -35,7 +35,7 @@ public class Income {
         String formattedDate = new SimpleDateFormat("MMM d HH:mm:ss").format(timestamp);
         return "Income: " +
                 "sum: " + sum +
-                ", category: " + category + '\'' +
+                ", category: " + category +
                 ", date: " + formattedDate;
     }
 }

@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StateHandlerService {
+public class StateHandler {
     public final UserService userService;
     public final SpendService spendService;
     public final IncomeService incomeService;
 
-    public StateHandlerService(UserService userService, SpendService spendService, IncomeService incomeService) {
+    public StateHandler(UserService userService, SpendService spendService, IncomeService incomeService) {
         this.userService = userService;
         this.spendService = spendService;
         this.incomeService = incomeService;

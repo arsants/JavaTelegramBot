@@ -116,7 +116,8 @@ public enum BotState {
 
         @Override
         public void handleInput(BotContext context) {
-            if (context.getInput().toLowerCase().contains("exit")) {
+            String input = context.getInput().toLowerCase();
+            if (input.contains("exit")) {
                 next = Usage;
             } else if (context.getInput().contains("-")) {
                 next = Spend;
@@ -150,15 +151,15 @@ public enum BotState {
             if (input.contains("exit")) {
                 next = Usage;
             } else if (input.contains("-")) {
-                if (!input.contains("regular") || !input.contains("other")) {
+                if (input.contains("regular") || input.contains("other")) {
+                    next = IncomeAction;
+                } else {
                     try {
                         sendMessage(context, "Wrong usage!");
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
                     next = Income;
-                } else {
-                    next = IncomeAction;
                 }
             }
         }
@@ -208,7 +209,6 @@ public enum BotState {
     IncomeAction(false) {
         @Override
         public void enter(BotContext context) throws TelegramApiException {
-            return;
         }
 
         @Override
@@ -222,9 +222,13 @@ public enum BotState {
         public void enter(BotContext context) throws TelegramApiException {
             List<Spend> spends = context.getSpends();
             StringBuilder sb = new StringBuilder();
-            for (var e : spends){
-                sb.append(e.toString());
-                sb.append("\n");
+            if (spends == null) {
+                sb.append("You have no added any spends yet");
+            } else {
+                for (var e : spends) {
+                    sb.append(e.toString());
+                    sb.append("\n");
+                }
             }
             sendMessage(context, sb + "\n");
         }
@@ -238,12 +242,17 @@ public enum BotState {
     IncomeReport(false) {
         @Override
         public void enter(BotContext context) throws TelegramApiException {
-            List<Income> income = context.getIncomes();
+            List<Income> incomes = context.getIncomes();
             StringBuilder sb = new StringBuilder();
-            for (var e : income){
-                sb.append(e.toString());
-                sb.append("\n");
+            if (incomes == null) {
+                sb.append("You have no added any incomes yet");
+            } else {
+                for (var e : incomes) {
+                    sb.append(e.toString());
+                    sb.append("\n");
+                }
             }
+
             sendMessage(context, sb + "\n");
         }
 

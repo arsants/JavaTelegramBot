@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 @Table(name = "spends")
 public class Spend {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @JoinColumn(name = "user_id")
@@ -33,7 +33,7 @@ public class Spend {
         String formattedDate = new SimpleDateFormat("MMM d HH:mm:ss").format(timestamp);
         return "Spend: " +
                 "sum: " + sum +
-                ", category: " + category + '\'' +
+                ", category: " + category +
                 ", date: " + formattedDate;
     }
 }

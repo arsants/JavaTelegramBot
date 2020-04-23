@@ -15,9 +15,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @PropertySource("classpath:telegram.properties")
@@ -38,9 +36,9 @@ public class ChatBot extends TelegramLongPollingBot {
     private String botToken;
 
     private final UserService userService;
-    private final StateHandlerService stateHandler;
+    private final StateHandler stateHandler;
 
-    public ChatBot(UserService userService, StateHandlerService stateHandler) {
+    public ChatBot(UserService userService, StateHandler stateHandler) {
         this.userService = userService;
         this.stateHandler = stateHandler;
     }
