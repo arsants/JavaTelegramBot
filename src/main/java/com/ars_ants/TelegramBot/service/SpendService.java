@@ -6,8 +6,8 @@ import com.ars_ants.TelegramBot.repo.SpendRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -35,11 +35,7 @@ public class SpendService {
         return spend.get();
     }
 
-    public List<Spend> getAllByUserId(Long userId) {
+    public Set<Spend> getAllByUserId(Long userId) {
         return spendRepository.getAllByUserId(userId);
-    }
-
-    public List<Spend> findAll() {
-        return spendRepository.findAll();
     }
 }

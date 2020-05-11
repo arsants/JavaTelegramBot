@@ -5,7 +5,7 @@ import com.ars_ants.TelegramBot.domain.Spend;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.List;
+import java.util.Set;
 
 
 public enum BotState {
@@ -220,7 +220,7 @@ public enum BotState {
     SpendReport(false) {
         @Override
         public void enter(BotContext context) throws TelegramApiException {
-            List<Spend> spends = context.getSpends();
+            Set<Spend> spends = context.getUser().getSpends();
             StringBuilder sb = new StringBuilder();
             if (spends == null) {
                 sb.append("You have no added any spends yet");
@@ -242,7 +242,7 @@ public enum BotState {
     IncomeReport(false) {
         @Override
         public void enter(BotContext context) throws TelegramApiException {
-            List<Income> incomes = context.getIncomes();
+            Set<Income> incomes = context.getUser().getIncomes();
             StringBuilder sb = new StringBuilder();
             if (incomes == null) {
                 sb.append("You have no added any incomes yet");

@@ -1,21 +1,24 @@
 package com.ars_ants.TelegramBot.domain;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private Long chatId;
     private Integer stateId;
     private String password;
     private Boolean admin;
-    private Boolean superUser = false;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Spend> spends;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Income> incomes;
 
     public User() {
     }
@@ -59,10 +62,6 @@ public class User {
         return admin;
     }
 
-    public Boolean isSuperUser() {
-        return superUser;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -75,7 +74,22 @@ public class User {
                 ", stateId=" + stateId +
                 ", password='" + password + '\'' +
                 ", admin=" + admin +
-                ", superUser=" + superUser +
                 '}';
+    }
+
+    public Set<Spend> getSpends() {
+        return spends;
+    }
+
+    public void setSpends(Set<Spend> spends) {
+        this.spends = spends;
+    }
+
+    public Set<Income> getIncomes() {
+        return incomes;
+    }
+
+    public void setIncomes(Set<Income> incomes) {
+        this.incomes = incomes;
     }
 }

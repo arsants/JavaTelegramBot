@@ -1,13 +1,10 @@
 package com.ars_ants.TelegramBot.bot;
 
-import com.ars_ants.TelegramBot.domain.Income;
-import com.ars_ants.TelegramBot.domain.Spend;
 import com.ars_ants.TelegramBot.service.IncomeService;
 import com.ars_ants.TelegramBot.service.SpendService;
 import com.ars_ants.TelegramBot.service.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class StateHandler {
@@ -37,13 +34,13 @@ public class StateHandler {
             case SpendReport:
                 if (isExit)
                     return;
-                List<Spend> spends = spendService.getAllByUserId(context.getUser().getId());
-                context.setSpends(spends);
+                var spends = spendService.getAllByUserId(context.getUser().getId());
+                context.getUser().setSpends(spends);
             case IncomeReport:
                 if (isExit)
                     return;
-                List<Income> incomes = incomeService.getAllByUserId(context.getUser().getId());
-                context.setIncomes(incomes);
+                var incomes = incomeService.getAllByUserId(context.getUser().getId());
+                context.getUser().setIncomes(incomes);
         }
     }
 }

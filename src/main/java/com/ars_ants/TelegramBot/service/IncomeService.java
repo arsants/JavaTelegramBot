@@ -5,8 +5,8 @@ import com.ars_ants.TelegramBot.repo.IncomeRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class IncomeService {
@@ -30,11 +30,7 @@ public class IncomeService {
         return income.get();
     }
 
-    public List<Income> getAllByUserId(Long userId) {
+    public Set<Income> getAllByUserId(Long userId) {
         return incomeRepository.getAllByUserId(userId);
-    }
-
-    public List<Income> findAll() {
-        return incomeRepository.findAll();
     }
 }

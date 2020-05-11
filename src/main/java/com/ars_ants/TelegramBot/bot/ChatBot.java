@@ -1,8 +1,6 @@
 package com.ars_ants.TelegramBot.bot;
 
 
-import com.ars_ants.TelegramBot.domain.Income;
-import com.ars_ants.TelegramBot.domain.Spend;
 import com.ars_ants.TelegramBot.domain.User;
 import com.ars_ants.TelegramBot.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -24,10 +22,6 @@ public class ChatBot extends TelegramLongPollingBot {
 
     private static final String BROADCAST = "broadcast ";
     private static final String LIST_USERS = "users";
-
-    List<Spend> spends;
-    List<Income> incomes;
-
 
     @Value("${bot.name}")
     private String botName;
@@ -73,7 +67,7 @@ public class ChatBot extends TelegramLongPollingBot {
             user = new User(chatId, state.ordinal());
             userService.addUser(user);
 
-            context = BotContext.of(this, user, text, null, null);
+            context = BotContext.of(this, user, text);
             try {
                 state.enter(context);
             } catch (TelegramApiException e) {
@@ -82,7 +76,7 @@ public class ChatBot extends TelegramLongPollingBot {
 
             LOGGER.info("New user has been add: " + chatId);
         } else {
-            context = BotContext.of(this, user, text, spends, incomes);
+            context = BotContext.of(this, user, text);
             state = BotState.byId(user.getStateId());
 
             LOGGER.info("Update received for user in state: " + state);
@@ -92,8 +86,6 @@ public class ChatBot extends TelegramLongPollingBot {
 
         do {
             stateHandler.handleState(state, context);
-            incomes = context.getIncomes();
-            spends = context.getSpends();
             state = state.nextState();
             try {
                 state.enter(context);
