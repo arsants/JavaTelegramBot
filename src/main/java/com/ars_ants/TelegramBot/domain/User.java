@@ -15,9 +15,10 @@ public class User {
     private Integer stateId;
     private String password;
     private Boolean admin;
-    @OneToMany(fetch = FetchType.EAGER)
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Spend> spends;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Income> incomes;
 
     public User() {

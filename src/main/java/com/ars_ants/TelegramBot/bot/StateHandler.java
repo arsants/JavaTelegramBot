@@ -26,11 +26,13 @@ public class StateHandler {
                     return;
                 String[] str = context.getInput().replaceAll(" ", "").split("-");
                 incomeService.create(context.getUser().getId(), str[0], Float.parseFloat(str[1]));
+                break;
             case Spend:
                 if (isExit)
                     return;
                 str = context.getInput().replaceAll(" ", "").split("-");
                 spendService.create(context.getUser().getId(), str[0], Float.parseFloat(str[1]));
+                break;
             case SpendReport:
                 if (isExit)
                     return;

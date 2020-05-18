@@ -176,7 +176,7 @@ public enum BotState {
         @Override
         public void enter(BotContext context) throws TelegramApiException {
             sendMessage(context, "Select type of report\n" +
-                    "Type: Spend/Income to select" +
+                    "Type: Spend/Income to select " +
                     "type \"exit\" to choose another action");
         }
 
@@ -222,7 +222,7 @@ public enum BotState {
         public void enter(BotContext context) throws TelegramApiException {
             Set<Spend> spends = context.getUser().getSpends();
             StringBuilder sb = new StringBuilder();
-            if (spends == null) {
+            if (spends.isEmpty()) {
                 sb.append("You have no added any spends yet");
             } else {
                 for (var e : spends) {
@@ -244,7 +244,7 @@ public enum BotState {
         public void enter(BotContext context) throws TelegramApiException {
             Set<Income> incomes = context.getUser().getIncomes();
             StringBuilder sb = new StringBuilder();
-            if (incomes == null) {
+            if (incomes.isEmpty()) {
                 sb.append("You have no added any incomes yet");
             } else {
                 for (var e : incomes) {
