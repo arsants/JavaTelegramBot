@@ -11,14 +11,25 @@ import java.util.Set;
 public enum BotState {
 
     Start {
+        private BotState next;
+
         @Override
         public void enter(BotContext context) throws TelegramApiException {
             sendMessage(context, "Hello there");
         }
 
         @Override
+        public void handleInput(BotContext context) {
+            if (!context.getUser().isAdmin()) {
+                next = Approved;
+            } else {
+                next = EnterPassword;
+            }
+        }
+
+        @Override
         public BotState nextState() {
-            return EnterPassword;
+            return next;
         }
     },
 
@@ -85,6 +96,9 @@ public enum BotState {
                     break;
                 case "report":
                     next = Report;
+                    break;
+                case "admin":
+                    next = Admin;
                     break;
                 default:
                     try {
@@ -254,6 +268,17 @@ public enum BotState {
             }
 
             sendMessage(context, sb + "\n");
+        }
+
+        @Override
+        public BotState nextState() {
+            return Usage;
+        }
+    },
+    Admin {
+        @Override
+        public void enter(BotContext context) throws TelegramApiException {
+            sendMessage(context, "Enter password to become an Admin");
         }
 
         @Override

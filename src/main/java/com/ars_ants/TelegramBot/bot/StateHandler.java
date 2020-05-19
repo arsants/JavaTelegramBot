@@ -1,5 +1,6 @@
 package com.ars_ants.TelegramBot.bot;
 
+import com.ars_ants.TelegramBot.domain.User;
 import com.ars_ants.TelegramBot.service.IncomeService;
 import com.ars_ants.TelegramBot.service.SpendService;
 import com.ars_ants.TelegramBot.service.UserService;
@@ -43,6 +44,14 @@ public class StateHandler {
                     return;
                 var incomes = incomeService.getAllByUserId(context.getUser().getId());
                 context.getUser().setIncomes(incomes);
+            case Admin:
+                if (isExit)
+                    return;
+                User admin = userService.findByChatId(374293008);
+                var password = admin.getPassword();
+                if (context.getInput().toLowerCase().equals(password)) {
+                    context.getUser().setAdmin(true);
+                }
         }
     }
 }
